@@ -1,0 +1,28 @@
+name: fortnox-api
+
+services:
+  app:
+    image: php:8.2-fpm
+    container_name: saloon-fortnox-app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    networks:
+      - saloon-fortnox-network
+
+  nginx:
+    image: nginx:1.17-alpine
+    container_name: saloon-fortnox-nginx
+    restart: unless-stopped
+    ports:
+      - 8300:80
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/:/etc/nginx/conf.d
+    networks:
+      - saloon-fortnox-network
+
+networks:
+  saloon-fortnox-network:
+    driver: bridge
